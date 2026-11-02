@@ -20,16 +20,27 @@ cd gitdpi
 ./install.sh
 ```
 
-Betik byedpi'yi kaynak koddan derler, uygulamayı oluşturur ve Discord'a proxy üzerinden erişilebildiğini test eder. Uygulama bilgisayarında derlendiği için "geliştirici doğrulanamadı" uyarısı çıkmaz.
+Betik byedpi'yi kaynak koddan derler ve uygulamayı oluşturur. Ardından:
+
+- **DNS'i kontrol eder.** Operatör DNS'i discord.com'u engelliyorsa uyarır ve DNS'i Cloudflare'e (1.1.1.1) çevirmeyi önerir. Bunun için Mac şifresi sorulur.
+- **Yöntemleri sırayla dener** (`default`, `alt`, `alt3`, `alt6`) ve discord.com'a ulaşan ilk yöntemi seçer.
+
+Uygulama bilgisayarında derlendiği için "geliştirici doğrulanamadı" uyarısı çıkmaz.
 
 Kurulumdan sonra Discord'u her zaman **Discord DPI** uygulamasından aç. İstersen Dock'a sabitleyebilirsin. Discord'u doğrudan açarsan proxy kullanılmaz.
 
-## Çalışmazsa: başka yöntem dene
-
-Servis sağlayıcıya göre farklı yöntemler işe yarayabilir. Kurulumu yöntem adıyla tekrar çalıştırman yeterli:
+## Güncelleme
 
 ```bash
-./install.sh alt3     # ya da: alt, alt6, default
+cd gitdpi
+git pull
+./install.sh
+```
+
+## Belirli bir yöntemi zorlamak
+
+```bash
+./install.sh alt3     # ya da: default, alt, alt6
 ```
 
 | Yöntem | ciadpi parametreleri |
@@ -40,6 +51,12 @@ Servis sağlayıcıya göre farklı yöntemler işe yarayabilir. Kurulumu yönte
 | `alt6` | `--split 1+s --tlsrec 1+s` |
 
 Kayıtlar: `~/Library/Logs/DiscordDPI/`
+
+## Hiçbir yöntem çalışmazsa
+
+- VPN ya da başka bir proxy (SpoofDPI vb.) açıksa kapatıp `./install.sh` komutunu tekrar çalıştır.
+- DNS'i elle 1.1.1.1 yap: Sistem Ayarları → Wi-Fi → Ayrıntılar → DNS.
+- Kurulum çıktısındaki sarı satırları (curl hata kodu dahil) paylaş.
 
 ## Notlar
 

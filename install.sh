@@ -71,11 +71,11 @@ codesign --force --sign - "$APP/Contents/Resources/ciadpi" >/dev/null 2>&1
 codesign --force --sign - "$APP" >/dev/null 2>&1 || true
 
 log "Proxy test ediliyor..."
-"$APP/Contents/Resources/ciadpi" -i 127.0.0.1 -p 1081 $ARGS >/dev/null 2>&1 &
+"$APP/Contents/Resources/ciadpi" -i http://127.0.0.1 -p 1081 $ARGS >/dev/null 2>&1 &
 TEST_PID=$!
 sleep 1
 CODE="$(curl -s -o /dev/null -w '%{http_code}' --max-time 8 \
-    --socks5-hostname 127.0.0.1:1081 https://discord.com/api/v9/gateway || true)"
+    -x http://127.0.0.1:1081 https://discord.com/api/v9/gateway || true)"
 kill -9 "$TEST_PID" 2>/dev/null || true
 wait "$TEST_PID" 2>/dev/null || true
 if [[ "$CODE" == "200" ]]; then

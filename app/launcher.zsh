@@ -1,13 +1,13 @@
 #!/bin/zsh
 # Discord DPI.app başlatıcısı.
-# GoodbyeDPI-Turkey'nin macOS yöntemini (byedpi / ciadpi, SOCKS5) 127.0.0.1:1080'de
+# GoodbyeDPI-Turkey'nin macOS yöntemini (byedpi / ciadpi, HTTP proxy) 127.0.0.1:1080'de
 # başlatır, Discord'u bu proxy ile açar ve Discord kapanınca proxy'yi de kapatır.
 
 res="${0:A:h:h}/Resources"
 ciadpi="$res/ciadpi"
 args=(${(z)"$(<"$res/method.args")"})
 port=1080
-proxy_url="socks5://127.0.0.1:$port"
+proxy_url="http://127.0.0.1:$port"
 discord_app=/Applications/Discord.app
 discord_bin="$discord_app/Contents/MacOS/Discord"
 log="$HOME/Library/Logs/DiscordDPI"
@@ -22,8 +22,11 @@ discord_pid() {
 }
 
 launch_discord() {
-  /usr/bin/open -a "$discord_app" --args \
-    --proxy-server="$proxy_url" '--proxy-bypass-list=<-loopback>' --disable-quic
+  # Güncelleyici Chromium'un proxy ayarını değil ortam değişkenlerini kullanıyor.
+  /usr/bin/open -a "$discord_app" \
+    --env HTTP_PROXY="$proxy_url" --env HTTPS_PROXY="$proxy_url" \
+    --env ALL_PROXY="$proxy_url" --env NO_PROXY=localhost,127.0.0.1 \
+    --args --proxy-server="$proxy_url" '--proxy-bypass-list=<-loopback>' --disable-quic
 }
 
 # Proxy ayarı olmadan açılmış Discord'u kapatıp proxy ile yeniden açar.
@@ -52,7 +55,7 @@ if [[ -n $listener ]]; then
   fi
   proxy_pid=$listener
 else
-  "$ciadpi" -i 127.0.0.1 -p $port "${args[@]}" >>"$log/ciadpi.log" 2>&1 &
+  "$ciadpi" -i http://127.0.0.1 -p $port "${args[@]}" >>"$log/ciadpi.log" 2>&1 &
   proxy_pid=$!
   for i in {1..30}; do
     /usr/bin/nc -z 127.0.0.1 $port 2>/dev/null && break

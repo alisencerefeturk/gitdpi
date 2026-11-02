@@ -4,7 +4,7 @@ Türkiye'deki Discord erişim engelini macOS'ta aşmak için tek tıkla açılan
 
 `/Applications` klasörüne **Discord DPI** adında bir uygulama kurar. Bu uygulamayı açınca:
 
-1. [GoodbyeDPI-Turkey](https://github.com/cagritaskn/GoodbyeDPI-Turkey)'nin macOS yöntemi ([byedpi](https://github.com/hufrea/byedpi) / `ciadpi`) `127.0.0.1:1080` adresinde yerel bir SOCKS5 proxy olarak başlar.
+1. [GoodbyeDPI-Turkey](https://github.com/cagritaskn/GoodbyeDPI-Turkey)'nin macOS yöntemi ([byedpi](https://github.com/hufrea/byedpi) / `ciadpi`) `127.0.0.1:1080` adresinde yerel bir HTTP proxy olarak başlar.
 2. Discord bu proxy ile açılır. Proxy'den yalnızca Discord geçer; sistemin proxy ve DNS ayarlarına dokunulmaz.
 3. Discord kapatılınca proxy de kendiliğinden kapanır.
 
@@ -12,7 +12,7 @@ Discord zaten proxy'siz açıksa (ya da bir güncellemeden sonra proxy'siz yenid
 
 ## Kurulum
 
-Gerekenler: macOS (Apple Silicon ya da Intel), `/Applications` içinde kurulu Discord ve Xcode Command Line Tools (yoksa betik kurulum penceresini kendisi açar).
+Gerekenler: macOS 13 veya üstü (Apple Silicon ya da Intel), `/Applications` içinde kurulu Discord ve Xcode Command Line Tools (yoksa betik kurulum penceresini kendisi açar).
 
 ```bash
 git clone https://github.com/alisencerefeturk/gitdpi.git
